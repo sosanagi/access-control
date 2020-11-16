@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>jQuery.Gantt</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=IE8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="css/style.css" type="text/css" rel="stylesheet">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" rel="stylesheet" type="text/css">
+        <style type="text/css">
+            body {
+                font-family: Helvetica, Arial, sans-serif;
+                font-size: 13px;
+                padding: 0 0 50px 0;
+            }
+            h1 {
+                margin: 40px 0 20px 0;
+            }
+            h2 {
+                font-size: 1.5em;
+                padding-bottom: 3px;
+                border-bottom: 1px solid #DDD;
+                margin-top: 50px;
+                margin-bottom: 25px;
+            }
+            table th:first-child {
+                width: 150px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="container">
+
+
+            <h2 id="example">
+                Example
+            </h2>
+
+            <div class="gantt"></div>
+        </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="js/jquery.fn.gantt.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+
+    <script>
+        $(function() {
+            "use strict";
+
+            var demoSource = [{
+                name: "Sprint 0",
+                values: [{
+                    from: 1320192000000,
+                    to: 1322401600000
+                    //label: "Requirement Gathering",
+                    //customClass: "ganttRed"
+                },{
+                    from: 1323001600000,
+                    to: 1323402200000
+                }]
+            }];
+
+            // shifts dates closer to Date.now()
+            var offset = new Date().setHours(0, 0, 0, 0) -
+                new Date(demoSource[0].values[0].from).setDate(35);
+            for (var i = 0, len = demoSource.length, value; i < len; i++) {
+                value = demoSource[i].values[0];
+                value.from += offset;
+                value.to += offset;
+            }
+
+            $(".gantt").gantt({
+                source: demoSource,
+                dow: ["Sun","Mon","Tue","Wen","Thr","Fri","Sat"],
+                navigate: "scroll",
+                //scale: "days",
+                maxScale: "months",
+                minScale: "hours",
+                itemsPerPage: 30,
+                onRender: function() {
+                    if (window.console && typeof console.log === "function") {
+                        console.log("chart rendered");
+                    }
+                }
+            });
+
+            /*$(".gantt").popover({
+                selector: ".bar",
+                title: function _getItemText() {
+                    return this.textContent;
+                },
+                container: '.gantt',
+                content: "Here's some useful information.",
+                trigger: "hover",
+                placement: "auto right"
+            });*/
+
+            prettyPrint();
+
+        });
+    </script>
+    </body>
+</html>

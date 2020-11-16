@@ -1,0 +1,30 @@
+{
+  "sql" : {
+    "slt_now_occupancy" : "SELECT user_info.user, user_inout.logout, place_info.place_name FROM user_info JOIN user_inout ON user_info.card_ID = user_inout.card_ID JOIN user_place ON user_info.card_ID = user_place.card_ID JOIN place_info ON user_place.place_ID = place_info.place_ID",
+    "slt_ID_master" : "SELECT card_ID FROM master_card WHERE card_ID = ( :card_ID )",
+    "slt_ID_search" : "SELECT card_ID FROM user_info WHERE card_ID = ( :card_ID )",
+    "ins_subscribe_user" : "INSERT INTO user_info VALUES ( :user, :card_ID )",
+    "ins_subscribe_place" : "INSERT INTO user_place VALUES ( :card_ID, :place_ID )",
+    "slt_login" : "SELECT * FROM user_inout WHERE card_ID==:card_ID AND logout==''",
+    "ins_login" :  "INSERT INTO user_inout VALUES ( :card_ID, :login ,:logout)",
+    "upd_login" : "UPDATE user_place SET place_ID = 0 WHERE card_ID==:card_ID",
+    "slt_logout" : "SELECT * FROM user_inout WHERE card_ID==:card_ID AND logout==''",
+    "upd_logout" : "UPDATE user_inout SET logout = :logout WHERE login==:login"
+  },
+  "message" : {
+    "nothing_login_members" : "誰もいませんよー",
+    "no_master_key" : "master_keyを\n登録しないでください。",
+    "not_registration_card" : "カードが登録\nされていません\n\nマスターキーを\nセットしてください\n",
+    "registration_card" : "このカードは\n登録済み",
+    "new_registration_card" : "登録カードを\nかざしてください。",
+    "1" : "カードを登録.",
+    "2" : "カードを登録..",
+    "3" : "カードを登録...",
+    "poof" : "カード登録完了",
+    "next_rgst_stage" : "http://10.0.0.247\nで、名前登録してください。",
+    "processed" : "処理中",
+    "login" : "ログイン",
+    "login_unregistered" : "出勤未登録ですよー",
+    "logout" : "ログアウト"
+  }
+}

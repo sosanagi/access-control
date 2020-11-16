@@ -1,0 +1,39 @@
+# -*- coding: utf-8 -*-
+
+import socket
+import sys
+import sesami
+
+HOST        = 'localhost'
+PORT        = 51000
+
+def com_send(mess):
+    while True:
+        try:
+            # 通信の確立
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.connect((HOST, PORT))
+
+            # メッセージ送信
+            sock.send(mess.encode('utf-8'))
+
+            # 通信の終了
+            sock.close()
+            break
+
+        except:
+            print ('retry: ' + mess)
+
+if __name__ == "__main__":
+    # 改行が反応しないので
+    args = sys.argv
+    cpar= args[1].replace('.', '\n').replace(',', ' ')
+
+    com_send(cpar)
+    # print(cpar)
+    # com_send("t\nest")
+    if "いません" in cpar:
+        sesami.sesami_control(True)
+    else:
+        sesami.sesami_control(False)
+
