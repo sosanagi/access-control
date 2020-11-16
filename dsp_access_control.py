@@ -1,13 +1,12 @@
 # -*- coding: utf8 -*-
 import tkinter as tk
-from tkinter import ttk
 from tkinter import font
 
 from socket import socket, AF_INET, SOCK_STREAM
 from time import *
 from datetime import datetime
 import threading
-
+import sys
 
 HOST = 'localhost'
 PORT = 51000
@@ -29,11 +28,13 @@ def main_proc():
 def set_frame():
     global var_left,var_right,now_time
 
-    main_frame = ttk.Frame(root,padding=5)
+    main_frame = tk.Frame(top)
     main_frame.grid()
 
     var_left = tk.StringVar()
     var_right = tk.StringVar()
+    var_left.set('再起動...')
+    var_right.set('完了')
     now_occupancy_title = tk.StringVar()
     now_occupancy_title.set('在室')
     now_time = tk.StringVar()
@@ -43,14 +44,14 @@ def set_frame():
     now_occupancy_label = tk.Label(main_frame,textvariable=now_occupancy_title,font=std_font)
     time_label = tk.Label(main_frame,textvariable=now_time,font=std_font)
     msgl_label = tk.Label(main_frame,textvariable=var_left,font=std_font,
-        width=15,height=50,foreground="#ffffff",background='#000000')
+        width=15,height=10,fg="white",bg="black",anchor="nw")
     msgr_label = tk.Label(main_frame,textvariable=var_right,font=std_font,
-        width=15,height=50,foreground="#ffffff",background='#000000')
+        width=15,height=10,fg="white",bg="black",anchor="nw")
 
-    now_occupancy_label.grid(row=0,column=0,sticky=tk.NW)
-    time_label.grid(row=0,column=1,sticky=tk.N)
     msgl_label.grid(row=1,column=0,sticky=tk.NW)
     msgr_label.grid(row=1,column=1,sticky=tk.NW)
+    now_occupancy_label.grid(row=0,column=0,sticky=tk.N)
+    time_label.grid(row=0,column=1,sticky=tk.N)
 
 def com_receive():
 
@@ -64,7 +65,7 @@ def com_receive():
         sys.exit()
 
     sock.listen (NUM_THREAD)
-    print ('receiver ready, NUM_THREAD = ' + str(NUM_THREAD))
+    print('receiver ready, NUM_THREAD = ' + str(NUM_THREAD))
 
     while True:
         try:
@@ -79,6 +80,8 @@ def com_receive():
             message_left('\n'.join(mess_list[:5]))
             if(len(mess_list)>=5):
                 message_right('\n'.join(mess_list[5:]))
+            else:
+                message_right(" ")
 
         except:
             print('Error: socket message unreceived')
@@ -86,14 +89,16 @@ def com_receive():
     sock.close()
 
 def message_left(msg):
+    #print('left:'+msg)
     var_left.set(msg)
 
 def message_right(msg):
+    #print('right:'+msg)
     var_right.set(msg)
 
 def show_time():
      now_time.set(strftime('%m/%d %H:%M:%S '))
-     root.after(1000, show_time)
+     top.after(1000, show_time)
 
 def com_start():
     th=threading.Thread(target=com_receive)
@@ -103,6 +108,7 @@ def com_start():
 def main():
     global root
     root = tk.Tk()
+    root.withdraw()
     root.after(0, main_proc)
     root.mainloop()
 

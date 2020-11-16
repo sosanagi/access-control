@@ -41,7 +41,8 @@ def com_send(mess):
             break
 
         except:
-            print ('retry: ' + mess)
+            print ('Error retry: ' + mess)
+            break
 
 def run_and_capture(cmd):
     '''
